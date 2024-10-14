@@ -47,6 +47,7 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.adapter.rxjava3)
 
     // Glide
     implementation(libs.glide)
@@ -55,16 +56,16 @@ dependencies {
     // Gson
     implementation(libs.gson)
 
-    // Room
+    // Room and RxJava
     implementation(libs.room.runtime)
-    annotationProcessor(libs.room.compiler)
     implementation(libs.room.rxjava2)
     implementation(libs.room.rxjava3)
     implementation(libs.rxandroid)
     implementation(libs.room.guava)
-    testImplementation(libs.room.testing)
     implementation(libs.room.paging)
 
+    annotationProcessor(libs.room.compiler)
+    testImplementation(libs.room.testing)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
