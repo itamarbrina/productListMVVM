@@ -10,6 +10,8 @@ import com.example.myapplication.models.Product;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface ProductsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -19,7 +21,7 @@ public interface ProductsDao {
     void insertProducts(Product product);
 
     @Query("SELECT * FROM PRODUCTS")
-    List<Product> getProduct();
+    Flowable<List<Product>> getProducts();
 
     @Delete
     void deleteProduct(Product product);

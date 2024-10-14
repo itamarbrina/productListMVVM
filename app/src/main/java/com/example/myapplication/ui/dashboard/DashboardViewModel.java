@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.dashboard;
 
 import android.app.Application;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,12 +14,15 @@ import com.example.myapplication.repositories.ProductsRepository;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+
 public class DashboardViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Integer> progressBarLiveData;
     private final MutableLiveData<List<Product>> productsLiveData;
     private final MutableLiveData<String> errorMessage;
     private final ProductsRepository productsRepository;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     public DashboardViewModel(@NonNull Application application) {
         super(application);
@@ -46,26 +48,35 @@ public class DashboardViewModel extends AndroidViewModel {
         errorMessage.setValue(null);
         setProgressBarLiveData(View.VISIBLE);
 
-        productsRepository.getProducts().observeForever(products -> {
-            setProgressBarLiveData(View.GONE);
-            if (products != null) {
-                productsLiveData.setValue(products);
-            } else {
-                errorMessage.setValue("An error occurred while fetching users");
-            }
-        });
+        disposables.add(
+                productsRepository.getProducts()
+                        .subscribe(products -> {
+                            productsLiveData.postValue(products);
+                            setProgressBarLiveData(View.GONE);
+                        }, throwable -> {
+                            errorMessage.postValue(throwable.getMessage());
+                            setProgressBarLiveData(View.GONE);
+                        })
+        );
     }
 
+
     public void insertUser(Product product) {
-        productsRepository.insertProduct(product);
+        disposables.add(
+                productsRepository.insertProduct(product)
+                        .subscribe(this::fetchProducts, throwable -> errorMessage.postValue(throwable.getMessage()))
+        );
     }
 
     public void deleteUser(Product product) {
-        productsRepository.deleteProduct(product);
+        disposables.add(
+                productsRepository.deleteProduct(product)
+                        .subscribe(this::fetchProducts, throwable -> errorMessage.postValue(throwable.getMessage()))
+        );
     }
 
     public void setProgressBarLiveData(Integer visibility) {
-        progressBarLiveData.setValue(visibility);
+        progressBarLiveData.postValue(visibility);
     }
 
     public boolean isUserValid(Product product, Map<String, String> errorMessages) {
@@ -94,6 +105,12 @@ public class DashboardViewModel extends AndroidViewModel {
         }
 
         return isValid;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposables.clear();
     }
 }
 

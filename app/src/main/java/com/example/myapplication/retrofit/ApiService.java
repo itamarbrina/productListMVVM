@@ -4,10 +4,10 @@ import com.example.myapplication.models.Product;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.rxjava3.core.Flowable;
 import retrofit2.http.GET;
 
-public interface ApiRequest {
+public interface ApiService {
     @GET("products")
-    Call<List<Product>> getProducts();
+    Flowable<List<Product>> getProducts();
 }
