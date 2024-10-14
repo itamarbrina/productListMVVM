@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ProductsStore</string>
+    <string name="title_activity_users">UsersActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="edit_product_button">Edit Product</string>
+    <string name="delete_product_button">Delete Product</string>
+    <string name="add_product">Add Product</string>
+    <string name="edit_product">Edit Product</string>
+    <string name="enter_category">Enter Category</string>
+    <string name="enter_price">Enter Price</string>
+    <string name="enter_description">Enter Description</string>
+    <string name="image">Enter Image</string>
+    <string name="title_error">error</string>
+    <string name="save_user">Save Product</string>
+    <string name="retry">Retry</string>
+    <string name="back_to_home">back</string>
+    <string name="enter_title">Enter title</string>
+</resources>
