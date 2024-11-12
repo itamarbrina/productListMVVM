@@ -6,9 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.myapplication.models.Product;
+import com.example.myapplication.models.db.ProductDbModel;
 
-@Database(entities = {Product.class}, version = 1, exportSchema = false)
+@Database(entities = {ProductDbModel.class}, version = 1, exportSchema = false)
 public abstract class ProductsDatabase extends RoomDatabase {
     private static volatile ProductsDatabase INSTANCE;
 

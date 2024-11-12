@@ -1,48 +1,27 @@
-package com.example.myapplication.models;
+package com.example.myapplication.models.db;
 
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 @Entity(tableName = "PRODUCTS")
-public class Product {
-
-    @SerializedName("id")
-    @Expose
+public class ProductDbModel {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @SerializedName("title")
-    @Expose
     @ColumnInfo(name = "title")
     private String title;
 
-    @SerializedName("price")
-    @Expose
     @ColumnInfo(name = "price")
     private String price;
 
-    @SerializedName("description")
-    @Expose
     @ColumnInfo(name = "description")
-    // todo this is very large find solution
     private String description;
 
-    @SerializedName("category")
-    @Expose
     @ColumnInfo(name = "category")
-    // todo this is very large find solution
     private String category;
 
-    @SerializedName("image")
-    @Expose
     @ColumnInfo(name = "image")
     private String imageUrl;
 
@@ -58,8 +37,8 @@ public class Product {
         return title;
     }
 
-    public void setTitle(String image) {
-        this.title = image;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getPrice() {
@@ -92,20 +71,6 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        Log.d("Product", "toString: " + id + " " + title + " " + price + " " + description + " " + category + " " + imageUrl);
-        return "Product{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", price='" + price + '\'' +
-                ", description='" + description + '\'' +
-                ", category='" + category + '\'' +
-                ", avatar='" + imageUrl + '\'' +
-                '}';
     }
 
 }

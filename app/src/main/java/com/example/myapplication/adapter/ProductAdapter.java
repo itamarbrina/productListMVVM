@@ -8,17 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.databinding.ItemProductBinding;
-import com.example.myapplication.models.Product;
+import com.example.myapplication.models.ui.ProductUiModel;
 
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    private final ArrayList<Product> productArrayList;
+    private final ArrayList<ProductUiModel> productArrayList;
     private final OnRecycleViewItemClickListener onRecycleViewItemClickListener;
 
-    public ProductAdapter(ArrayList<Product> productArrayList, OnRecycleViewItemClickListener onRecycleViewItemClickListener) {
+    public ProductAdapter(ArrayList<ProductUiModel> productArrayList, OnRecycleViewItemClickListener onRecycleViewItemClickListener) {
         this.productArrayList = productArrayList;
         this.onRecycleViewItemClickListener = onRecycleViewItemClickListener;
     }
@@ -32,7 +32,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = productArrayList.get(position);
+        ProductUiModel product = productArrayList.get(position);
         holder.bind(product);
     }
 
@@ -63,7 +63,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             });
         }
 
-        public void bind(Product product) {
+        public void bind(ProductUiModel product) {
             binding.productId.setText(product.getTitle());
             binding.TVcategory.setText(product.getCategory());
             binding.TVprice.setText(String.format("%s%s", product.getPrice(), Currency.getInstance(Locale.getDefault()).getSymbol()));
@@ -71,13 +71,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             Glide.with(binding.getRoot().getContext())
                     .load(product.getImageUrl())
                     .into(binding.profileImageView);
-            binding.TVdescription.setOnClickListener((view)->{
-               if(binding.TVdescription.getMaxLines() == 2){
-                   binding.TVdescription.setMaxLines(Integer.MAX_VALUE);
-               }
-               else{
-                   binding.TVdescription.setMaxLines(2);
-               }
+            binding.TVdescription.setOnClickListener((view) -> {
+                if (binding.TVdescription.getMaxLines() == 2) {
+                    binding.TVdescription.setMaxLines(Integer.MAX_VALUE);
+                } else {
+                    binding.TVdescription.setMaxLines(2);
+                }
             });
         }
     }

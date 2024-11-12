@@ -1,6 +1,6 @@
 package com.example.myapplication.retrofit;
 
-import com.example.myapplication.models.Product;
+import com.example.myapplication.models.api.ProductApiModel;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import retrofit2.http.GET;
 
 public interface ApiService {
     @GET("products")
-    Flowable<List<Product>> getProducts();
+    Flowable<List<ProductApiModel>> getProducts();
 }

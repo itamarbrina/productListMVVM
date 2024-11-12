@@ -22,7 +22,7 @@ import com.example.myapplication.adapter.ProductAdapter;
 import com.example.myapplication.databinding.DialogEditProductBinding;
 import com.example.myapplication.databinding.DialogErrorBinding;
 import com.example.myapplication.databinding.FragmentDashboardBinding;
-import com.example.myapplication.models.Product;
+import com.example.myapplication.models.ui.ProductUiModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class DashboardFragment extends Fragment {
 
 
     private FragmentDashboardBinding binding;
-    private final ArrayList<Product> productsArrayList = new ArrayList<>();
+    private final ArrayList<ProductUiModel> productsArrayList = new ArrayList<>();
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private DashboardViewModel dashboardViewModel;
@@ -72,7 +72,7 @@ public class DashboardFragment extends Fragment {
 
             @Override
             public void onDeleteClick(int position) {
-                dashboardViewModel.deleteUser(productsArrayList.get(position));
+                dashboardViewModel.deleteProduct(productsArrayList.get(position));
                 productsArrayList.remove(position);
                 productAdapter.notifyItemRemoved(position);
             }
@@ -84,10 +84,10 @@ public class DashboardFragment extends Fragment {
     private void observeViewModel() {
         dashboardViewModel.getProgressBarLiveData().observe(getViewLifecycleOwner(), progressBar::setVisibility);
 
-        dashboardViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), usersList -> {
-            if (usersList != null) {
+        dashboardViewModel.getProductsLiveData().observe(getViewLifecycleOwner(), productsList -> {
+            if (productsList != null) {
                 productsArrayList.clear();
-                productsArrayList.addAll(usersList);
+                productsArrayList.addAll(productsList);
                 buttonAddUser.setVisibility(View.VISIBLE);
                 productAdapter.notifyDataSetChanged();
             }
@@ -102,10 +102,10 @@ public class DashboardFragment extends Fragment {
 
     private void showEditUserDialog(int position) {
         DialogEditProductBinding dialogBinding = DialogEditProductBinding.inflate(getLayoutInflater());
-        Product product;
+        ProductUiModel product;
         if (position == -1) {
             dialogBinding.editProductHeader.setText(getText(R.string.add_product));
-            product = new Product();
+            product = new ProductUiModel();
             product.setId(productsArrayList.get(productsArrayList.size() - 1).getId() + 1);
         } else {
             product = productsArrayList.get(position);
@@ -123,18 +123,18 @@ public class DashboardFragment extends Fragment {
 
         AlertDialog dialog = builder.create();
 
-        Product finalUser = product;
+        ProductUiModel finalProduct = product;
         dialogBinding.buttonSaveUser.setOnClickListener(v -> {
 
             Map<String, String> errorMessages = new HashMap<>();
 
-            finalUser.setTitle(Objects.requireNonNull(dialogBinding.editTextTitle.getText()).toString().trim());
-            finalUser.setDescription(Objects.requireNonNull(dialogBinding.editTextDescription.getText()).toString().trim());
-            finalUser.setCategory(Objects.requireNonNull(dialogBinding.editTextCategory.getText()).toString().trim());
-            finalUser.setPrice(Objects.requireNonNull(dialogBinding.editTextPrice.getText()).toString().trim());
-            finalUser.setImageUrl(Objects.requireNonNull(dialogBinding.editTextImage.getText()).toString().trim());
+            finalProduct.setTitle(Objects.requireNonNull(dialogBinding.editTextTitle.getText()).toString().trim());
+            finalProduct.setDescription(Objects.requireNonNull(dialogBinding.editTextDescription.getText()).toString().trim());
+            finalProduct.setCategory(Objects.requireNonNull(dialogBinding.editTextCategory.getText()).toString().trim());
+            finalProduct.setPrice(Objects.requireNonNull(dialogBinding.editTextPrice.getText()).toString().trim());
+            finalProduct.setImageUrl(Objects.requireNonNull(dialogBinding.editTextImage.getText()).toString().trim());
 
-            boolean isValid = dashboardViewModel.isUserValid(finalUser, errorMessages);
+            boolean isValid = dashboardViewModel.isProductValid(finalProduct, errorMessages);
 
             dialogBinding.editTextDescription.setError(errorMessages.get("descriptionError"));
             dialogBinding.editTextTitle.setError(errorMessages.get("titleError"));
@@ -143,9 +143,9 @@ public class DashboardFragment extends Fragment {
 
 
             if (isValid) {
-                dashboardViewModel.insertUser(finalUser);
+                dashboardViewModel.insertProduct(finalProduct);
                 if (position == -1) {
-                    productsArrayList.add(finalUser);
+                    productsArrayList.add(finalProduct);
                     productAdapter.notifyItemInserted(productsArrayList.size() - 1);
                 } else {
                     productAdapter.notifyItemChanged(position);

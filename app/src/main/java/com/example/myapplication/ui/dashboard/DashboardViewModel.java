@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.dashboard;
 
+import static com.example.myapplication.mappers.ProductMapper.mapDbToUiProducts;
+import static com.example.myapplication.mappers.ProductMapper.mapUiToDbProduct;
+
 import android.app.Application;
 import android.view.View;
 
@@ -8,7 +11,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.myapplication.models.Product;
+import com.example.myapplication.models.ui.ProductUiModel;
 import com.example.myapplication.repositories.ProductsRepository;
 
 import java.util.List;
@@ -19,7 +22,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 public class DashboardViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Integer> progressBarLiveData;
-    private final MutableLiveData<List<Product>> productsLiveData;
+    private final MutableLiveData<List<ProductUiModel>> productsLiveData;
     private final MutableLiveData<String> errorMessage;
     private final ProductsRepository productsRepository;
     private final CompositeDisposable disposables = new CompositeDisposable();
@@ -32,7 +35,7 @@ public class DashboardViewModel extends AndroidViewModel {
         this.errorMessage = new MutableLiveData<>();
     }
 
-    public LiveData<List<Product>> getProductsLiveData() {
+    public LiveData<List<ProductUiModel>> getProductsLiveData() {
         return productsLiveData;
     }
 
@@ -51,7 +54,7 @@ public class DashboardViewModel extends AndroidViewModel {
         disposables.add(
                 productsRepository.getProducts()
                         .subscribe(products -> {
-                            productsLiveData.postValue(products);
+                            productsLiveData.postValue(mapDbToUiProducts(products));
                             setProgressBarLiveData(View.GONE);
                         }, throwable -> {
                             errorMessage.postValue(throwable.getMessage());
@@ -61,16 +64,16 @@ public class DashboardViewModel extends AndroidViewModel {
     }
 
 
-    public void insertUser(Product product) {
+    public void insertProduct(ProductUiModel product) {
         disposables.add(
                 productsRepository.insertProduct(product)
                         .subscribe(this::fetchProducts, throwable -> errorMessage.postValue(throwable.getMessage()))
         );
     }
 
-    public void deleteUser(Product product) {
+    public void deleteProduct(ProductUiModel product) {
         disposables.add(
-                productsRepository.deleteProduct(product)
+                productsRepository.deleteProduct(mapUiToDbProduct(product))
                         .subscribe(this::fetchProducts, throwable -> errorMessage.postValue(throwable.getMessage()))
         );
     }
@@ -79,7 +82,7 @@ public class DashboardViewModel extends AndroidViewModel {
         progressBarLiveData.postValue(visibility);
     }
 
-    public boolean isUserValid(Product product, Map<String, String> errorMessages) {
+    public boolean isProductValid(ProductUiModel product, Map<String, String> errorMessages) {
         boolean isValid = true;
 
         if (product.getTitle().isEmpty()) {
