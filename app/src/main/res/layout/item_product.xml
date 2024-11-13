@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp">
+    android:layout_margin="8dp"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    tools:context=".MainActivity"
+    tools:theme="@style/Theme.Material3.Light.NoActionBar">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="194dp"
             android:scaleType="centerCrop"
-            app:strokeColor="@color/md_theme_primary"
-            app:strokeWidth="0.5dp" />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/baseline_image_24" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,66 +34,62 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:orientation="vertical">
-
+            <!-- Title, secondary, and supporting text -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-                <!-- Title, secondary and supporting text -->
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:paddingBottom="4dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/TVcategory"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?attr/textAppearanceTitleLarge"
-                            android:textColor="@color/md_theme_primary" />
-
-                        <Button
-                            android:id="@+id/editProductButton"
-                            style="?attr/materialIconButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/edit_product_button"
-                            app:icon="@drawable/ic_edit" />
-
-                        <Button
-                            android:id="@+id/deleteProductButton"
-                            style="?attr/materialIconButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/delete_product_button"
-                            app:icon="@drawable/ic_delete"
-                            app:iconTint="@color/md_theme_error" />
-                    </LinearLayout>
+                    android:layout_margin="0dp"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
 
                     <TextView
-                        android:id="@+id/productId"
+                        android:id="@+id/TVcategory"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="@color/md_theme_primary"
+                        tools:text="Title" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/editProductButton"
+                        style="?attr/materialIconButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="@color/md_theme_primary" />
+                        android:contentDescription="@string/edit_product_button"
+                        app:icon="@drawable/ic_edit"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/deleteProductButton"
+                        style="?attr/materialIconButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/delete_product_button"
+                        app:icon="@drawable/ic_delete"
+                        app:iconTint="@color/md_theme_error" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/productId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/md_theme_primary"
+                    tools:text="some description to the product in visual manner"
+                    tools:textAppearance="?attr/textAppearanceBody2" />
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="1dp"
+                android:background="@color/md_theme_outline" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -102,22 +104,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
-                    android:textAppearance="?attr/textAppearanceTitleLarge"
-                    android:textColor="@color/md_theme_secondary" />
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/md_theme_secondary"
+                    tools:text="226$"/>
 
                 <TextView
                     android:id="@+id/TVdescription"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="@color/md_theme_outline" />
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@color/md_theme_onSecondaryContainer"
+                    tools:text="some really really really long text is in here so i can test the visibility of my beautiful application in real time"/>
 
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
-
+</androidx.cardview.widget.CardView>
